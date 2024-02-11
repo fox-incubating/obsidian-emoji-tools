@@ -1,0 +1,10 @@
+{
+	"id": "obsidian-emoji-tools",
+	"name": "Emoji Tools",
+	"version": "0.4.1",
+	"minAppVersion": "1.0.0",
+	"description": "Quickly search for and insert emojis into your notes.",
+	"author": "hyperupcall",
+	"authorUrl": "https://edwinkofler.com",
+	"isDesktopOnly": false
+}
