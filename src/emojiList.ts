@@ -1856,4 +1856,4 @@ export const emoji = JSON.parse(`{
   ":zombie_man:": "🧟‍♂",
   ":zombie_woman:": "🧟‍♀",
   ":zzz:": "💤"
-}`);
+}`)

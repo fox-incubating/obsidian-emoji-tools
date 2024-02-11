@@ -1,5 +1,13 @@
 import { PluginSettingTab, App, Setting } from 'obsidian'
-import { MarkdownPostProcessor, MarkdownPreviewRenderer, MarkdownView, Modal, Notice, Plugin, Editor } from "obsidian";
+import {
+	MarkdownPostProcessor,
+	MarkdownPreviewRenderer,
+	MarkdownView,
+	Modal,
+	Notice,
+	Plugin,
+	Editor,
+} from 'obsidian'
 
 import EmojiShortcodesPlugin from './main'
 
@@ -11,9 +19,8 @@ export interface EmojiPluginSettings {
 	history: string[]
 
 	// toolbar
-	twitterEmojiActive: boolean;
+	twitterEmojiActive: boolean
 }
-
 
 export const DEFAULT_SETTINGS: EmojiPluginSettings = {
 	immediateReplace: true,
@@ -21,8 +28,7 @@ export const DEFAULT_SETTINGS: EmojiPluginSettings = {
 	historyPriority: true,
 	historyLimit: 100,
 	history: [],
-	twitterEmojiActive: false
-
+	twitterEmojiActive: false,
 }
 
 export class EmojiPluginSettingTab extends PluginSettingTab {
@@ -44,9 +50,7 @@ export class EmojiPluginSettingTab extends PluginSettingTab {
 			// thing
 			new Setting(containerEl)
 				.setName('Twitter Emoji (v13)')
-				.setDesc(
-					'Improved emoji support, but may cause unexpected behavior.'
-				)
+				.setDesc('Improved emoji support, but may cause unexpected behavior.')
 				.addToggle((toggle) =>
 					toggle
 						.setValue(this.plugin.settings.twitterEmojiActive)
@@ -55,56 +59,50 @@ export class EmojiPluginSettingTab extends PluginSettingTab {
 							await this.plugin.saveSettings()
 							if (value) {
 								MarkdownPreviewRenderer.registerPostProcessor(
-									EmojiPickerPlugin.postprocessor
+									EmojiPickerPlugin.postprocessor,
 								)
 							} else {
 								MarkdownPreviewRenderer.unregisterPostProcessor(
-									EmojiPickerPlugin.postprocessor
+									EmojiPickerPlugin.postprocessor,
 								)
 							}
-						})
+						}),
 				)
 		}
 
 		new Setting(containerEl)
 			.setName('Immediate Emoji Replace')
 			.setDesc(
-				'If this is turned on, Emoji shortcodes will be immediately replaced after typing. Otherwise they are still stored as a shortcode and you only see the Emoji in Preview Mode.'
+				'If this is turned on, Emoji shortcodes will be immediately replaced after typing. Otherwise they are still stored as a shortcode and you only see the Emoji in Preview Mode.',
 			)
 			.addToggle((cb) => {
-				cb.setValue(this.plugin.settings.immediateReplace).onChange(
-					async (value) => {
-						this.plugin.settings.immediateReplace = value
-						await this.plugin.saveSettings()
-					}
-				)
+				cb.setValue(this.plugin.settings.immediateReplace).onChange(async (value) => {
+					this.plugin.settings.immediateReplace = value
+					await this.plugin.saveSettings()
+				})
 			})
 
 		new Setting(containerEl)
 			.setName('Emoji Suggester')
 			.setDesc(
-				"If this is turned on, a Suggester will appear everytime you type : followed by a letter. This will help you insert Emojis. (Doesn't work on mobile)"
+				"If this is turned on, a Suggester will appear everytime you type : followed by a letter. This will help you insert Emojis. (Doesn't work on mobile)",
 			)
 			.addToggle((cb) => {
-				cb.setValue(this.plugin.settings.suggester).onChange(
-					async (value) => {
-						this.plugin.settings.suggester = value
-						await this.plugin.saveSettings()
-					}
-				)
+				cb.setValue(this.plugin.settings.suggester).onChange(async (value) => {
+					this.plugin.settings.suggester = value
+					await this.plugin.saveSettings()
+				})
 			})
 
 		new Setting(containerEl)
 			.setName('Use History Priority')
 			.setDesc('Suggester gives priority to recently used emoji.')
 			.addToggle((cb) => {
-				cb.setValue(this.plugin.settings.historyPriority).onChange(
-					async (value) => {
-						this.plugin.settings.historyPriority = value
-						await this.plugin.saveSettings()
-						this.display()
-					}
-				)
+				cb.setValue(this.plugin.settings.historyPriority).onChange(async (value) => {
+					this.plugin.settings.historyPriority = value
+					await this.plugin.saveSettings()
+					this.display()
+				})
 			})
 
 		if (this.plugin.settings.historyPriority) {
@@ -116,9 +114,7 @@ export class EmojiPluginSettingTab extends PluginSettingTab {
 						.setValue(String(this.plugin.settings.historyLimit))
 						.onChange(async (value) => {
 							this.plugin.settings.historyLimit =
-								value !== ''
-									? Number(value)
-									: DEFAULT_SETTINGS.historyLimit
+								value !== '' ? Number(value) : DEFAULT_SETTINGS.historyLimit
 							await this.plugin.saveSettings()
 						})
 				})
@@ -137,7 +133,7 @@ export class EmojiPluginSettingTab extends PluginSettingTab {
 		new Setting(containerEl)
 			.setName('Donate')
 			.setDesc(
-				'If you like this Plugin, consider donating to support continued development:'
+				'If you like this Plugin, consider donating to support continued development:',
 			)
 			.addButton((bt) => {
 				bt.buttonEl.outerHTML = `<a href="https://ko-fi.com/phibr0"><img src="https://uploads-ssl.webflow.com/5c14e387dab576fe667689cf/61e11e22d8ff4a5b4a1b3346_Supportbutton-1.png"></a>`

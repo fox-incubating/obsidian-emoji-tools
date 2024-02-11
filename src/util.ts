@@ -1,10 +1,9 @@
-import EmojiToolbar from './ui/EmojiToolbar';
-import { Modal } from 'obsidian'
 import EmojiToolbar from './ui/EmojiToolbar'
+import { Modal } from 'obsidian'
 
 export function checkForInputBlock(
 	cmEditor: CodeMirror.Editor,
-	cursorPos: CodeMirror.Position
+	cursorPos: CodeMirror.Position,
 ): boolean {
 	const tokenType = cmEditor.getTokenAt(cursorPos, true).type
 	return (
@@ -26,34 +25,34 @@ function insertText(editor: Editor, text: string) {
 }
 
 export class EmojiModal extends Modal {
-	private div: HTMLElement;
-	private reactComponent: React.ReactElement;
- 
+	private div: HTMLElement
+	private reactComponent: React.ReactElement
+
 	constructor(app: App, theme: str, isNative: boolean, editor: Editor) {
-	  super(app)
-	  this.reactComponent = React.createElement(EmojiToolbar, {
-		 "onSelect": async (emoji) => {
-			this.close()
-			await sleep(10)
-			insertText(editor, emoji.native)
-		 },
-		 "onClose": () => {
-			this.close()
-		 },
-		 "theme": theme,
-		 "isNative": isNative,
-	  })
+		super(app)
+		this.reactComponent = React.createElement(EmojiToolbar, {
+			onSelect: async (emoji: EMoji) => {
+				this.close()
+				await sleep(10)
+				insertText(editor, emoji.native)
+			},
+			onClose: () => {
+				this.close()
+			},
+			theme: theme,
+			isNative: isNative,
+		})
 	}
- 
+
 	async onOpen() {
-	  this.titleEl.empty()
-	  this.modalEl.id = 'emoji-modal'
-	  const { contentEl } = this;
-	  ReactDOM.render(this.reactComponent, contentEl)
+		this.titleEl.empty()
+		this.modalEl.id = 'emoji-modal'
+		const { contentEl } = this
+		ReactDOM.render(this.reactComponent, contentEl)
 	}
- 
+
 	onClose() {
-	  const { contentEl } = this;
-	  contentEl.empty();
+		const { contentEl } = this
+		contentEl.empty()
 	}
- }
+}
