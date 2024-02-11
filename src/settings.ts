@@ -9,7 +9,7 @@ import {
 	Editor,
 } from 'obsidian'
 
-import EmojiShortcodesPlugin from './main'
+import EmojiToolsPlugin from './main.ts'
 
 export interface EmojiPluginSettings {
 	immediateReplace: boolean
@@ -32,9 +32,9 @@ export const DEFAULT_SETTINGS: EmojiPluginSettings = {
 }
 
 export class EmojiPluginSettingTab extends PluginSettingTab {
-	plugin: EmojiShortcodesPlugin
+	plugin: EmojiToolsPlugin
 
-	constructor(app: App, plugin: EmojiShortcodesPlugin) {
+	constructor(app: App, plugin: EmojiToolsPlugin) {
 		super(app, plugin)
 		this.plugin = plugin
 	}
@@ -46,29 +46,26 @@ export class EmojiPluginSettingTab extends PluginSettingTab {
 
 		containerEl.createEl('h2', { text: 'Emoji Shortcodes Plugin' })
 
-		{
-			// thing
-			new Setting(containerEl)
-				.setName('Twitter Emoji (v13)')
-				.setDesc('Improved emoji support, but may cause unexpected behavior.')
-				.addToggle((toggle) =>
-					toggle
-						.setValue(this.plugin.settings.twitterEmojiActive)
-						.onChange(async (value) => {
-							this.plugin.settings.twitterEmojiActive = value
-							await this.plugin.saveSettings()
-							if (value) {
-								MarkdownPreviewRenderer.registerPostProcessor(
-									EmojiPickerPlugin.postprocessor,
-								)
-							} else {
-								MarkdownPreviewRenderer.unregisterPostProcessor(
-									EmojiPickerPlugin.postprocessor,
-								)
-							}
-						}),
-				)
-		}
+		new Setting(containerEl)
+			.setName('Twitter Emoji (v13)')
+			.setDesc('Improved emoji support, but may cause unexpected behavior.')
+			.addToggle((toggle) =>
+				toggle
+					.setValue(this.plugin.settings.twitterEmojiActive)
+					.onChange(async (value) => {
+						this.plugin.settings.twitterEmojiActive = value
+						await this.plugin.saveSettings()
+						if (value) {
+							MarkdownPreviewRenderer.registerPostProcessor(
+								EmojiToolsPlugin.postprocessor,
+							)
+						} else {
+							MarkdownPreviewRenderer.unregisterPostProcessor(
+								EmojiToolsPlugin.postprocessor,
+							)
+						}
+					}),
+			)
 
 		new Setting(containerEl)
 			.setName('Immediate Emoji Replace')

@@ -1,5 +1,7 @@
-import EmojiToolbar from './ui/EmojiToolbar'
-import { Modal } from 'obsidian'
+import { App, Editor, Modal } from 'obsidian'
+import React from 'react'
+import { createRoot } from 'react-dom/client';
+import EmojiToolbar from './ui/EmojiToolbar.tsx'
 
 export function checkForInputBlock(
 	cmEditor: CodeMirror.Editor,
@@ -31,10 +33,13 @@ export class EmojiModal extends Modal {
 	constructor(app: App, theme: str, isNative: boolean, editor: Editor) {
 		super(app)
 		this.reactComponent = React.createElement(EmojiToolbar, {
-			onSelect: async (emoji: EMoji) => {
+			onEmojiSelect: async (emoji) => {
 				this.close()
 				await sleep(10)
 				insertText(editor, emoji.native)
+			},
+			onClickOutside() {
+				this.close()
 			},
 			onClose: () => {
 				this.close()
@@ -47,12 +52,12 @@ export class EmojiModal extends Modal {
 	async onOpen() {
 		this.titleEl.empty()
 		this.modalEl.id = 'emoji-modal'
-		const { contentEl } = this
-		ReactDOM.render(this.reactComponent, contentEl)
+
+		const root = createRoot(this.contentEl)
+		root.render(this.reactComponent)
 	}
 
 	onClose() {
-		const { contentEl } = this
-		contentEl.empty()
+		this.contentEl.empty()
 	}
 }

@@ -9,15 +9,15 @@ import {
 	EditorSuggestTriggerInfo,
 	MarkdownView,
 	EditorSuggestContext,
+	MarkdownPreviewRenderer,
 } from 'obsidian'
 import DefinitionListPostProcessor from './definitionListPostProcessor'
-import { emoji } from './emojiList'
-import EmojiMarkdownPostProcessor from './emojiPostProcessor'
-import { DEFAULT_SETTINGS, EmojiPluginSettings, EmojiPluginSettingTab } from './settings'
-import { checkForInputBlock } from './util'
-import { EmojiModal } from './util'
+import { emoji } from './emojiList.ts'
+import EmojiMarkdownPostProcessor from './emojiPostProcessor.ts'
+import { DEFAULT_SETTINGS, EmojiPluginSettings, EmojiPluginSettingTab } from './settings.ts'
+import { EmojiModal, checkForInputBlock } from './util.ts'
 
-export default class EmojiShortcodesPlugin extends Plugin {
+export default class EmojiToolsPlugin extends Plugin {
 	settings: EmojiPluginSettings
 	emojiList: string[]
 
@@ -28,7 +28,7 @@ export default class EmojiShortcodesPlugin extends Plugin {
 			// emoji picker
 
 			if (this.settings.twitterEmojiActive) {
-				MarkdownPreviewRenderer.registerPostProcessor(EmojiPickerPlugin.postprocessor)
+				MarkdownPreviewRenderer.registerPostProcessor(EmojiToolsPlugin.postprocessor)
 			}
 
 			this.addCommand({
@@ -47,18 +47,10 @@ export default class EmojiShortcodesPlugin extends Plugin {
 									return
 								}
 								const myModal = new EmojiModal(this.app, theme, isNative, view.editor)
-								console.log(myModal)
 								myModal.open()
-								document
-									.getElementsByClassName('emoji-mart-search')[0]
-									.getElementsByTagName('input')[0]
-									.focus()
-								document
-									.getElementsByClassName('emoji-mart-search')[0]
-									.getElementsByTagName('input')[0]
-									.select()
-							} catch (e) {
-								new Notice(e.message)
+
+							} catch (err) {
+								new Notice(err.message)
 							}
 						}
 						return true
@@ -103,9 +95,9 @@ export default class EmojiShortcodesPlugin extends Plugin {
 }
 
 class EmojiSuggester extends EditorSuggest<string> {
-	plugin: EmojiShortcodesPlugin
+	plugin: EmojiToolsPlugin
 
-	constructor(plugin: EmojiShortcodesPlugin) {
+	constructor(plugin: EmojiToolsPlugin) {
 		super(plugin.app)
 		this.plugin = plugin
 	}

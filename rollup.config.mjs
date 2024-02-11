@@ -16,7 +16,6 @@ export default {
 	},
 	external: ['obsidian', 'fs', 'os', 'path'],
 	plugins: [
-		typescript(),
 		nodeResolve({
 			browser: true,
 		}),
@@ -26,20 +25,7 @@ export default {
 		}),
 		babel({
 			babelHelpers: 'bundled',
-			presets: [
-				'@babel/preset-react',
-				'@babel/preset-typescript',
-				[
-					'@babel/preset-env',
-					{
-						useBuiltIns: 'usage',
-						corejs: '3.35.1',
-						targets: {
-							electron: '17.4.11',
-						},
-					},
-				],
-			],
+			extensions: ['.ts', '.tsx'],
 		}),
 		commonjs(),
 		json(),

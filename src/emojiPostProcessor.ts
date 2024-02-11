@@ -1,5 +1,5 @@
 import { MarkdownPostProcessor } from 'obsidian'
-import { emoji } from './emojiList'
+import { emoji } from './emojiList.ts'
 
 export default class EmojiMarkdownPostProcessor {
 	static emojiProcessor: MarkdownPostProcessor = (el: HTMLElement) => {
