@@ -1,6 +1,6 @@
 import { App, Editor, Modal } from 'obsidian'
-import React from 'react'
-import { createRoot } from 'react-dom/client';
+import * as React from 'react'
+import { createRoot } from 'react-dom/client'
 import EmojiToolbar from './ui/EmojiToolbar.tsx'
 
 export function checkForInputBlock(
@@ -18,7 +18,7 @@ function sleep(ms: number) {
 	return new Promise((resolve) => setTimeout(resolve, ms || DEF_DELAY))
 }
 
-function insertText(editor: Editor, text: string) {
+function insertText(app: App, editor: Editor, text: string) {
 	if (text.length === 0 || text == null) return
 	const cursor = editor.getCursor('from')
 	editor.replaceRange(text, cursor, cursor)
@@ -27,16 +27,15 @@ function insertText(editor: Editor, text: string) {
 }
 
 export class EmojiModal extends Modal {
-	private div: HTMLElement
 	private reactComponent: React.ReactElement
 
-	constructor(app: App, theme: str, isNative: boolean, editor: Editor) {
+	constructor(app: App, theme: string, isNative: boolean, editor: Editor) {
 		super(app)
 		this.reactComponent = React.createElement(EmojiToolbar, {
-			onEmojiSelect: async (emoji) => {
+			onEmojiSelect: async (emoji: any) => {
 				this.close()
 				await sleep(10)
-				insertText(editor, emoji.native)
+				insertText(app, editor, emoji.native)
 			},
 			onClickOutside() {
 				this.close()

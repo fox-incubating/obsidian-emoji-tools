@@ -43,7 +43,6 @@ export class EmojiPluginSettingTab extends PluginSettingTab {
 		const { containerEl } = this
 
 		containerEl.empty()
-
 		containerEl.createEl('h2', { text: 'Emoji Shortcodes Plugin' })
 
 		new Setting(containerEl)
@@ -126,14 +125,5 @@ export class EmojiPluginSettingTab extends PluginSettingTab {
 					})
 				})
 		}
-
-		new Setting(containerEl)
-			.setName('Donate')
-			.setDesc(
-				'If you like this Plugin, consider donating to support continued development:',
-			)
-			.addButton((bt) => {
-				bt.buttonEl.outerHTML = `<a href="https://ko-fi.com/phibr0"><img src="https://uploads-ssl.webflow.com/5c14e387dab576fe667689cf/61e11e22d8ff4a5b4a1b3346_Supportbutton-1.png"></a>`
-			})
 	}
 }

@@ -1,6 +1,6 @@
 // Generated from: https://api.github.com/emojis
 
-export const emoji = JSON.parse(`{
+export const emoji: Record<string, string> = JSON.parse(`{
   ":100:": "💯",
   ":1234:": "🔢",
   ":+1:": "👍",

@@ -5,7 +5,6 @@ import nodeResolve from '@rollup/plugin-node-resolve'
 import typescript from '@rollup/plugin-typescript'
 import json from '@rollup/plugin-json'
 import css from 'rollup-plugin-import-css'
-
 export default {
 	input: 'src/main.ts',
 	output: {

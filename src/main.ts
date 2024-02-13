@@ -14,7 +14,11 @@ import {
 import DefinitionListPostProcessor from './definitionListPostProcessor'
 import { emoji } from './emojiList.ts'
 import EmojiMarkdownPostProcessor from './emojiPostProcessor.ts'
-import { DEFAULT_SETTINGS, EmojiPluginSettings, EmojiPluginSettingTab } from './settings.ts'
+import {
+	DEFAULT_SETTINGS,
+	EmojiPluginSettings,
+	EmojiPluginSettingTab,
+} from './settings.ts'
 import { EmojiModal, checkForInputBlock } from './util.ts'
 
 export default class EmojiToolsPlugin extends Plugin {
@@ -23,46 +27,42 @@ export default class EmojiToolsPlugin extends Plugin {
 
 	async onload() {
 		await this.loadSettings()
+		this.addSettingTab(new EmojiPluginSettingTab(this.app, this))
 
-		{
-			// emoji picker
-
-			if (this.settings.twitterEmojiActive) {
-				MarkdownPreviewRenderer.registerPostProcessor(EmojiToolsPlugin.postprocessor)
-			}
-
-			this.addCommand({
-				id: 'emoji-picker:open-picker',
-				name: 'Open emoji picker',
-				hotkeys: [],
-				checkCallback: async (checking: boolean) => {
-					const leaf = this.app.workspace.activeLeaf
-					if (leaf) {
-						if (!checking) {
-							try {
-								const theme = this.app.getTheme() === 'moonstone' ? 'light' : 'dark'
-								const isNative = !this.settings.twitterEmojiActive
-								const view = this.app.workspace.getActiveViewOfType(MarkdownView)
-								if (!view) {
-									return
-								}
-								const myModal = new EmojiModal(this.app, theme, isNative, view.editor)
-								myModal.open()
-
-							} catch (err) {
-								new Notice(err.message)
-							}
-						}
-						return true
-					}
-					return false
-				},
-			})
+		if (this.settings.twitterEmojiActive) {
+			MarkdownPreviewRenderer.registerPostProcessor(EmojiToolsPlugin.postprocessor)
 		}
+
+		this.addCommand({
+			id: 'emoji-picker:open-picker',
+			name: 'Open emoji picker',
+			hotkeys: [],
+			checkCallback: (checking: boolean) => {
+				const leaf = this.app.workspace.activeLeaf
+				if (leaf) {
+					if (!checking) {
+						try {
+							const theme = this.app.getTheme() === 'moonstone' ? 'light' : 'dark'
+							const isNative = !this.settings.twitterEmojiActive
+							const view = this.app.workspace.getActiveViewOfType(MarkdownView)
+							if (!view) {
+								return
+							}
+							const myModal = new EmojiModal(this.app, theme, isNative, view.editor)
+							myModal.open()
+						} catch (err) {
+							new Notice(err instanceof Error ? err.message : String(err))
+						}
+					}
+					return true
+				}
+				return false
+			},
+		})
+
 		this.registerEditorSuggest(new EmojiSuggester(this))
 
 		this.registerMarkdownPostProcessor(EmojiMarkdownPostProcessor.emojiProcessor)
-		//this.registerMarkdownPostProcessor(DefinitionListPostProcessor.definitionListProcessor);
 	}
 
 	async loadSettings() {
@@ -137,7 +137,7 @@ class EmojiSuggester extends EditorSuggest<string> {
 
 	selectSuggestion(suggestion: string): void {
 		if (this.context) {
-			(this.context.editor as Editor).replaceRange(
+			;(this.context.editor as Editor).replaceRange(
 				this.plugin.settings.immediateReplace ? emoji[suggestion] : `${suggestion} `,
 				this.context.start,
 				this.context.end,

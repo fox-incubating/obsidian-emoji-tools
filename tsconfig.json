@@ -1,14 +1,15 @@
 {
 	"compilerOptions": {
 		"baseUrl": ".",
-		"allowSyntheticDefaultImports": true,
 		"inlineSourceMap": true,
 		"inlineSources": true,
-		// "jsx": "preserve",
 		"jsx": "react",
 		"module": "ESNext",
 		"target": "ESNext",
 		"allowJs": true,
+		"checkJs": true,
+		"forceConsistentCasingInFileNames": true,
+		"strict": true,
 		"noImplicitAny": true,
 		"moduleResolution": "Node",
 		"noEmit": true,

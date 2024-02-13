@@ -1,14 +1,8 @@
 import Picker from '@emoji-mart/react'
+// @ts-expect-error
 import twitterData from '@emoji-mart/data'
-import React from 'react'
+import * as React from 'react'
 
-// export default function EmojiToolbar() {
-// 	return (
-// 		<div>
-// 			<Picker autoFocus={true} data={twitterData} />
-// 		</div>
-// 	)
-// }
 export default class EmojiToolbar extends React.Component {
 	constructor(props) {
 		super(props)
